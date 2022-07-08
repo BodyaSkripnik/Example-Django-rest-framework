@@ -1,6 +1,6 @@
 from django.contrib import admin
-from users.models import Comments,Participant
+from users.models import Comment,Participant
 
 
-for model in [Comments,Participant]:
+for model in [Comment,Participant]:
     admin.site.register(model)
