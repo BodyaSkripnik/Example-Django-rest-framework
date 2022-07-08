@@ -74,7 +74,7 @@ REQUEST:
   headers => {
     'Authorization: Token 846cd...'
     }
-  params => id = id_8Yn8yQT2Mk
+  params => id = id_KVDqFR3cTP
   data => {
         title : 'This comment new',
         project :  'id_DdC4y2Vpne',
@@ -87,6 +87,6 @@ RESPONSE:
       created_date : '2022-07-08T11:28:31.855884+03:00',
       participant: 'id_3Q7AHGQYEE',
       project: 'id_DdC4y2Vpne'
-        }
+    }
 ```
 
