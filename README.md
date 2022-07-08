@@ -15,8 +15,9 @@ RESPONSE:
     }
 
 
-`GET /api/v1/comments/get/` 
+`GET /api/v1/comments/get/` <br />
 **Search for comments with nested serializers**
+
 RESPONSE:
     {
         "id": "id_8Yn8yQT2Mk",
