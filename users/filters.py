@@ -9,4 +9,10 @@ class CommentsFilter(django_filters.FilterSet):
     project = django_filters.CharFilter(field_name="project__id")
     class Meta:
         model = Comment
-        fields = ['id', 'title', 'created_date','participant','project']
+        fields = {
+            'id': ['exact'],
+            'title' : ['contains'],
+            'created_date' : ['lt', 'gt'],
+            'participant' : ['exact'],
+            'project' : ['exact'],
+        }
