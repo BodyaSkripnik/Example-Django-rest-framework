@@ -1,10 +1,9 @@
-from unicodedata import name
 from rest_framework import serializers
-from django.utils.text import slugify
 from users.models import Participant,Comment
 from projects.serializers import ProjectSerializer
 
 class ParticipantSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Participant
         fields = ('id', 'created_date', 'name','photo')

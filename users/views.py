@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from users.models import Participant,Comment
-from rest_framework import generics,mixins
+from rest_framework import generics,mixins,status
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsAdminOrReadOnly,IsOwnerOrReadOnly
@@ -9,12 +9,27 @@ from users.serializers import ParticipantSerializer,CommentsReadSerializer,Comme
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django_filters import rest_framework as filters
+from users.filters import CommentsFilter
 
 
-class CommentsGetAPIList(generics.ListCreateAPIView):#для GET
-    queryset = Comment.objects.all()
+
+class CommentsViewsSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,GenericViewSet):
     serializer_class = CommentsReadSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = CommentsFilter
+    permission_classes = (IsAuthenticated, )
+    
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        if not pk:
+            queryset = Comment.objects.all()# [:2]
+            return queryset
+        else:
+            queryset = Comment.objects.filter(pk=pk)
+            return queryset
+        
 
 
 class CommentsPostAPIList(generics.ListCreateAPIView):#для POST 
@@ -34,6 +49,7 @@ class CommentsAPIDestroy(generics.RetrieveDestroyAPIView):
     serializer_class = CommentsSerializer
     permission_classes = (IsAdminOrReadOnly, )
 
+
 class ParticipantViewsSet(mixins.CreateModelMixin,
                 mixins.RetrieveModelMixin,
                 mixins.UpdateModelMixin,
@@ -42,6 +58,8 @@ class ParticipantViewsSet(mixins.CreateModelMixin,
                 GenericViewSet):
     queryset = Participant.objects.all()
     serializer_class = ParticipantSerializer
+    
+
 
 class CustomAuthToken(ObtainAuthToken):
 

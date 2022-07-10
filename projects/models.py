@@ -2,6 +2,8 @@ from django.db import models
 from shortuuid.django_fields import ShortUUIDField
 from pytz import unicode
 
+
+
 class Project(models.Model):
     id = ShortUUIDField(length = 10, prefix="id_", primary_key=True)
     created_date = models.DateTimeField(auto_now_add=True, blank=True)
