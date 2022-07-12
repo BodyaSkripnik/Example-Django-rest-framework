@@ -49,7 +49,7 @@ RESPONSE:
 ```
 REQUEST:
   headers => {
-    'Authorization: Token 846cd...'
+    'Authorization: Bearer 846cd...'
   }
   data => {
     title : 'New comment ',
@@ -72,7 +72,7 @@ RESPONSE:
 ```
 REQUEST:
   headers => {
-    'Authorization: Token 846cd...'
+    'Authorization: Bearer 846cd...'
     }
   params => id = id_KVDqFR3cTP
   data => {

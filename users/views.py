@@ -1,13 +1,9 @@
-from django.shortcuts import render
 from users.models import Participant,Comment
-from rest_framework import generics,mixins,status
+from rest_framework import generics,mixins
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from .permissions import IsAdminOrReadOnly,IsOwnerOrReadOnly
-from rest_framework.response import Response
 from users.serializers import ParticipantSerializer,CommentsReadSerializer,CommentsSerializer
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
@@ -15,7 +11,7 @@ from users.filters import CommentsFilter
 
 
 
-class CommentsViewsSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,GenericViewSet):
+class CommentsViewsSet(mixins.RetrieveModelMixin,mixins.ListModelMixin,GenericViewSet):#Для GET
     serializer_class = CommentsReadSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = CommentsFilter
@@ -38,16 +34,16 @@ class CommentsPostAPIList(generics.ListCreateAPIView):#для POST
     permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-class CommentsAPIUpdate(generics.RetrieveUpdateAPIView):
+class CommentsAPIUpdate(generics.RetrieveUpdateAPIView):#для PUT
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
  
  
-class CommentsAPIDestroy(generics.RetrieveDestroyAPIView):
+class CommentsAPIDestroy(generics.RetrieveDestroyAPIView):#для DELETE
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
-    permission_classes = (IsAdminOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
 class ParticipantViewsSet(mixins.CreateModelMixin,
@@ -61,16 +57,3 @@ class ParticipantViewsSet(mixins.CreateModelMixin,
     
 
 
-class CustomAuthToken(ObtainAuthToken):
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
