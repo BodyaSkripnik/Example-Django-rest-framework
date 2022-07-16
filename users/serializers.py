@@ -13,10 +13,15 @@ class CommentsReadSerializer(serializers.ModelSerializer):
     
     project = ProjectSerializer(read_only=True,many=False)
     participant = ParticipantSerializer(read_only=True,many=False)
+    rating = serializers.CharField(source='get_rating')
 
     class Meta:
         model = Comment
-        fields = ('id', 'title', 'created_date','participant','project')
+        fields = ('id', 'title', 'created_date',\
+            'participant','project',\
+            'project_management_level', 'quality_of_performance', \
+            'timeliness_of_performance','culture_and_speed_of_communication',\
+            'speed_and_quality_of_defect_elimination','rating')
 
 
 class CommentsSerializer(serializers.ModelSerializer):
